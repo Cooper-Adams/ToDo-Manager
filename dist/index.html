@@ -8,6 +8,52 @@
     <script src="main.js" defer></script>
 </head>
 <body>
-    <div class="content"></div>
+    <div class="loginPopup">
+        <div class="formPopup" id = "popupForm">
+            <form action = "#" class="toDo-Form">
+                <div class="formHeader">
+                    <h2>Add New...</h2>
+                    <button class = "closeButton" type="button">X</button>
+                </div>
+
+                <div class="formContent">
+                    <div class="formTypes" id="formTypes">
+                        <div class="itemType toDo"><strong>To-Do</strong></div>
+                        <div class="itemType project"><strong>Project</strong></div>
+                        <div class="itemType note"><strong>Note</strong></div>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <input type="text" name="field1" class="field-style field-split align-left" placeholder="Title" required/>
+                            <input type="date" name="field2" class="field-style field-split align-right" required />
+                                
+                        </li>
+                                
+                        <li>
+                            <textarea name="field5" class="field-style" placeholder="Message"></textarea>
+                        </li>
+
+                        <li>
+                            <div class="field-style" id = "priorities">
+                                <button class = "lowPriority" type = "button">Low</button>
+                                <button class = "medPriority" type = "button">Medium</button>
+                                <button class = "highPriority" type = "button">High</button>
+                            </div>
+                        </li>
+
+                        <li>
+                            <input type="submit" value="Send Message"/>
+                        </li>
+
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="content">
+
+    </div>
 </body>
 </html>
