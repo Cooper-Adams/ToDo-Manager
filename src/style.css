@@ -14,7 +14,7 @@ html, body {
     padding: 10px 0px 10px 50px;
     font-size: xx-large;
     text-align: left;
-    background: purple;
+    background: #305A72;
     border-bottom: 2px solid black;
 }
 
@@ -26,7 +26,7 @@ html, body {
 
 .menu {
     flex: 0 0 25%;
-    background-color: violet;
+    background-color: rgb(202, 200, 200);
     border-right: 2px solid black;
     font-size: x-large;
 }
@@ -42,7 +42,7 @@ html, body {
 
 .menu button {
     margin-top: 60px;
-    background: purple;
+    background: #305A72;
     border: 2px solid black;
     border-radius: 50%;
     padding: 0%;
@@ -62,5 +62,175 @@ html, body {
 
 .todoContent {
     width: 75%;
-    background-color: rgb(255, 140, 255);
+    background-color: white;
+}
+
+/*Styles the header text and its background on the forms*/
+.formHeader 
+{
+    padding-left: 10px;
+    background: #305A72;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+}
+
+.formHeader button {
+    padding-right: 10px;
+    background: none;
+    border: none;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.formHeader button:hover {
+    cursor: pointer;
+}
+
+.formHeader button:active {
+    transform: scale(.8);
+}
+
+/*Helps position the form on the screen*/
+.loginPopup {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+/*Makes the form invisible and places it in the center of the screen*/
+.formPopup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%, 5%);
+    z-index: 9;
+}
+
+/*Spaces the left side form buttons*/
+.formTypes {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    border-right: 2px solid #305A72;
+}
+
+/*Organizes the form content*/
+.formContent {
+    display: flex;
+    flex-flow: row;
+}
+
+.toDo-Form{
+    display: flex;
+    flex-flow: column;
+	max-width: 600px;
+	background: #FAFAFA;
+	margin: 50px auto;
+	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+	border-radius: 10px;
+	border: 6px solid #305A72;
+}
+
+.toDo-Form ul{
+	padding: 10px;
+	margin:0;
+	list-style:none;
+}
+
+.toDo-Form ul li{
+	display: block;
+	margin-bottom: 10px;
+	min-height: 35px;
+}
+
+.toDo-Form ul li  .field-style{
+	box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    min-height: 37px;
+	padding: 8px;
+	outline: none;
+	border: 1px solid #B0CFE0;
+
+}
+
+.toDo-Form ul li  .field-style:focus{
+	box-shadow: 0 0 5px #B0CFE0;
+	border:1px solid #B0CFE0;
+}
+
+.toDo-Form ul li .field-split{
+	width: 49%;
+}
+
+.toDo-Form ul li .field-full{
+	width: 100%;
+}
+
+.toDo-Form ul li input.align-left{
+	float:left;
+}
+
+.toDo-Form ul li input.align-right{
+	float:right;
+}
+
+.toDo-Form ul li textarea{
+	width: 100%;
+	height: 100px;
+}
+
+.toDo-Form ul li input[type="button"], 
+.toDo-Form ul li input[type="submit"] {
+	-moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
+	-webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
+	box-shadow: inset 0px 1px 0px 0px #3985B1;
+	background-color: #216288;
+	border: 1px solid #17445E;
+	display: inline-block;
+	cursor: pointer;
+	color: #FFFFFF;
+	padding: 8px 18px;
+	text-decoration: none;
+	font: 12px Arial, Helvetica, sans-serif;
+}
+
+.toDo-Form ul li input[type="button"]:hover, 
+.toDo-Form ul li input[type="submit"]:hover {
+	background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
+	background-color: #28739E;
+}
+
+.lowPriority {
+    background: green;
+}
+
+.medPriority {
+    background: yellow;
+}
+
+.highPriority {
+    background: red;
+}
+
+.lowPriority, .medPriority, .highPriority {
+    border: 1px solid black;
+    border-radius: 2px;
+    font-weight: bolder;
+}
+
+.lowPriority:hover, .medPriority:hover, .highPriority:hover {
+    cursor: pointer;
+}
+
+.lowPriority:active, .medPriority:active, .highPriority:active {
+    transform: scale(.9);
+}
+
+#priorities {
+    display: flex;
+    justify-content: space-evenly;
 }
