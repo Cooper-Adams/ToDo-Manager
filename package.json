@@ -1,0 +1,25 @@
+{
+  "name": "todo-manager",
+  "version": "1.0.0",
+  "description": "The ToDo-Manager is exactly what the title implies, a hub for your all of your To-Do tasks.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cooper-Adams/ToDo-Manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cooper-Adams/ToDo-Manager/issues"
+  },
+  "homepage": "https://github.com/Cooper-Adams/ToDo-Manager#readme",
+  "devDependencies": {
+    "css-loader": "^6.5.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
