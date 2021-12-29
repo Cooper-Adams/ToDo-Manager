@@ -18,7 +18,7 @@
 
                 <div class="formContent">
                     <div class="formTypes" id="formTypes">
-                        <div class="itemType toDo"><strong>To-Do</strong></div>
+                        <div class="itemType toDo active"><strong>To-Do</strong></div>
                         <div class="itemType project"><strong>Project</strong></div>
                         <div class="itemType note"><strong>Note</strong></div>
                     </div>
@@ -31,7 +31,7 @@
                         </li>
                                 
                         <li>
-                            <textarea name="field5" class="field-style" placeholder="Message"></textarea>
+                            <textarea name="field5" class="field-style" placeholder="Description"></textarea>
                         </li>
 
                         <li>
@@ -43,7 +43,63 @@
                         </li>
 
                         <li>
-                            <input type="submit" value="Send Message"/>
+                            <input type="submit" value="Create To-Do"/>
+                        </li>
+
+                    </ul>
+                </div>
+            </form>
+
+            <form action = "#" class="projectForm">
+                <div class="formHeader">
+                    <h2>Add New...</h2>
+                    <button class = "closeButton2" type="button">X</button>
+                </div>
+
+                <div class="formContent">
+                    <div class="formTypes" id="formTypes">
+                        <div class="itemType toDo2"><strong>To-Do</strong></div>
+                        <div class="itemType project2 active"><strong>Project</strong></div>
+                        <div class="itemType note2"><strong>Note</strong></div>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <input type="text" name="field1" class="field-style field-split align-left" placeholder="Title" required/>                                
+                        </li>
+
+                        <li>
+                            <input type="submit" value="Create Project"/>
+                        </li>
+
+                    </ul>
+                </div>
+            </form>
+
+            <form action = "#" class="noteForm">
+                <div class="formHeader">
+                    <h2>Add New...</h2>
+                    <button class = "closeButton3" type="button">X</button>
+                </div>
+
+                <div class="formContent">
+                    <div class="formTypes" id="formTypes">
+                        <div class="itemType toDo3"><strong>To-Do</strong></div>
+                        <div class="itemType project3"><strong>Project</strong></div>
+                        <div class="itemType note3 active"><strong>Note</strong></div>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <input type="text" name="field1" class="field-style field-split align-left" placeholder="Title"/>                                
+                        </li>
+
+                        <li>
+                            <textarea name="field5" class="field-style" placeholder="Description"></textarea>
+                        </li>
+
+                        <li>
+                            <input type="submit" value="Create Note"/>
                         </li>
 
                     </ul>
