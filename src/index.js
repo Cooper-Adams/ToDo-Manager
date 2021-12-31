@@ -3,7 +3,7 @@ import loadNotes from './notes';
 import loadProjects from './projects';
 import loadToday from './today';
 import loadUpcoming from './upcoming';
-import { todoItemFactory, noteFactory, projectFactory } from './items';
+import { todoItemFactory, noteFactory } from './items';
 import './style.css';
 
 //By default, the item arrays are empty, but logic should be added to save
@@ -68,8 +68,11 @@ formProject.addEventListener('submit', processProjectForm);
 /*formNote.addEventListener('submit', processNoteForm);*/
 
 /**
+ * Processes the data from the ToDo item form. Contains Date comparison
+ * and validation, as well as matching the Date with the correct Project
+ * tab.
  * 
- * @param {event} e The form submission
+ * @param {Event} e The ToDo form submission event
  */
 function processToDoForm(e)
 {
@@ -123,7 +126,13 @@ function processToDoForm(e)
     placeNewItem(newToDo, project);
 }
 
-
+/**
+ * Processes the data of the Project form. Takes the title and creates
+ * a new option in the ToDo form, then adds a new option to the projects
+ * submenu.
+ * 
+ * @param {Event} e The form submission event
+ */
 function processProjectForm(e)
 {
     e.preventDefault();
@@ -177,7 +186,13 @@ function placeNewItem(newToDo, project)
         //Else, add it and sort the list by decreasing priority, then display
         else
         {
+            todaysItems.push(newToDo);
 
+            todaysItems.sort(function (a, b) {
+                return b.priority - a.priority;
+            });
+
+            loadToday(todaysItems);
         }
     }
 
@@ -333,9 +348,8 @@ function displayNote()
 
 /**
  * Presents a pop up form to the user where they can create a new To-Do
- * item, project, or note, with To-Do being the default tab. If the user
- * adds a To-Do item, it will be placed within the current tab on the 
- * page (i.e. Today, Upcoming, or a user created Project section). 
+ * item, project, or note, with To-Do being the default tab. The user may
+ * choose the tab that their ToDo item resides in (Today, Upcoming, etc). 
  * If the user closes the form, it will be wiped and hidden away.
  * 
  * @returns {void};
