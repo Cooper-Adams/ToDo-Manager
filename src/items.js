@@ -1,25 +1,14 @@
-export const todoItemFactory = (title, description, dueDate, priority, time) =>
+export function todoItemFactory(title, description, dueDate, priority)
 {
-    this.title = title;
-    this.description = description;
-    this.dueDate = dueDate;
-    this.priority = priority;
-    this.time = time;
-
-    return {title, description, dueDate, priority, time};
+    return { title: title, description: description, dueDate: dueDate, priority: priority };
 }
 
-export const projectFactory = (title) =>
+/*export const projectFactory = (title) =>
 {
-    this.title = title;
-
-    return title;
-}
+    return { title: title }
+}*/
 
 export const noteFactory = (header, description) =>
 {
-    this.header = header;
-    this.description = description;
-
-    return {header, description};
+    return { header: header, description: description };
 }
