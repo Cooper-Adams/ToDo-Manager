@@ -26,8 +26,7 @@
                     <ul>
                         <li>
                             <input type="text" name="field1" class="field-style field-split align-left" placeholder="Title" required/>
-                            <input type="date" name="field2" class="field-style field-split align-right" required />
-                                
+                            <input type="date" name="field2" class="field-style field-split align-right" required />  
                         </li>
                                 
                         <li>
@@ -35,11 +34,16 @@
                         </li>
 
                         <li>
-                            <div class="field-style" id = "priorities">
-                                <button class = "lowPriority" type = "button">Low</button>
-                                <button class = "medPriority" type = "button">Medium</button>
-                                <button class = "highPriority" type = "button">High</button>
-                            </div>
+                            <select class="field-style field-split align-left" id = "priorities">
+                                <option value = "lowPriority">Low</option>
+                                <option value = "medPriority">Medium</option>
+                                <option value = "highPriority">High</option>
+                            </select>
+
+                            <select class = "field-style field-split align-right" id = "projectOptions">
+                                <option value="today">Today</option>
+                                <option value="upcoming">Upcoming</option>
+                            </select>
                         </li>
 
                         <li>
