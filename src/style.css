@@ -282,6 +282,10 @@ html, body {
     border-bottom: 2px solid #305A72;
 }
 
+.checkActive {
+    opacity: 50%;
+}
+
 .projectSubMenu
 {
     display: none;
@@ -292,4 +296,44 @@ html, body {
     display: none;
     cursor: pointer;
     font-size: medium;
+}
+
+.toDoDiv {
+    background-color: rgb(202, 200, 200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: x-large;
+}
+
+.toDoDiv button {
+    border: none;
+    background-color: rgb(202, 200, 200);
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.toDoDiv button:hover {
+    cursor: pointer;
+}
+
+.toDoDiv button:active {
+    transform: scale(.9);
+}
+
+.toDoDiv .leftBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding-left: 10px;
+}
+
+.toDoDiv .rightBox
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding-right: 10px;
 }
