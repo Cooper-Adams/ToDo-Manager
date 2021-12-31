@@ -37,6 +37,12 @@ function loadPage()
     const projects = document.createElement('span');
     projects.classList.add('projects');
     projects.textContent = "Projects";
+
+    const pul = document.createElement('ul');
+    pul.classList.add('projectSubMenu');
+
+    projects.appendChild(pul);
+
     ul.appendChild(projects);
 
     const notes = document.createElement('span');
