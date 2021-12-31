@@ -63,6 +63,8 @@ html, body {
 .todoContent {
     width: 75%;
     background-color: white;
+    padding: 10px;
+    text-align: center;
 }
 
 /*Styles the header text and its background on the forms*/
@@ -158,6 +160,7 @@ html, body {
 
 .toDo-Form ul, .projectForm ul, .noteForm ul {
     min-width: 400px;
+    min-height: 275px;
 	padding: 10px;
 	margin:0;
 	list-style:none;
@@ -189,16 +192,13 @@ html, body {
 	border:1px solid #B0CFE0;
 }
 
-.toDo-Form ul li .field-split, 
-.projectForm ul li .field-split, 
-.noteForm ul li .field-split {
+.toDo-Form ul li .field-split {
 	width: 49%;
 }
 
-.toDo-Form ul li .field-full, 
-.projectForm ul li .field-split, 
+.projectForm ul li .field-split,
 .noteForm ul li .field-split {
-	width: 100%;
+    width: 100%;
 }
 
 .toDo-Form ul li input.align-left, 
@@ -210,6 +210,18 @@ html, body {
 .toDo-Form ul li input.align-right, 
 .projectForm ul li input.align-right, 
 .noteForm ul li input.align-right{
+	float:right;
+}
+
+.toDo-Form ul li select.align-left, 
+.projectForm ul li select.align-left, 
+.noteForm ul li select.align-left {
+	float:left;
+}
+
+.toDo-Form ul li select.align-right, 
+.projectForm ul li select.align-right, 
+.noteForm ul li select.align-right{
 	float:right;
 }
 
@@ -237,6 +249,9 @@ html, body {
 	padding: 8px 18px;
 	text-decoration: none;
 	font: 12px Arial, Helvetica, sans-serif;
+    position: fixed;
+    left: 45%; 
+    bottom: 15%;
 }
 
 .toDo-Form ul li input[type="button"]:hover, 
@@ -249,35 +264,10 @@ html, body {
 	background-color: #28739E;
 }
 
-.lowPriority {
-    background: green;
-}
-
-.medPriority {
-    background: yellow;
-}
-
-.highPriority {
-    background: red;
-}
-
-.lowPriority, .medPriority, .highPriority {
-    border: 1px solid black;
-    border-radius: 2px;
-    font-weight: bolder;
-}
-
-.lowPriority:hover, .medPriority:hover, .highPriority:hover {
-    cursor: pointer;
-}
-
-.lowPriority:active, .medPriority:active, .highPriority:active {
-    transform: scale(.9);
-}
-
 #priorities {
     display: flex;
     justify-content: space-evenly;
+    cursor: pointer;
 }
 
 .itemType:hover {
@@ -290,4 +280,16 @@ html, body {
 
 .active {
     border-bottom: 2px solid #305A72;
+}
+
+.projectSubMenu
+{
+    display: none;
+    list-style: none;
+}
+
+.projectOption {
+    display: none;
+    cursor: pointer;
+    font-size: medium;
 }
