@@ -23,10 +23,9 @@ loadPage();
 loadToday(todaysItems);
 
 
-//Default page is Today
-var currentPage = "Today";
-var currentTab = "ToDo";
-
+//Defines the current date
+var currentDate = new Date();
+currentDate.setHours(0, 0, 0, 0);
 
 //On click, pull up corresponding tab/action for the menu item
 const today = document.querySelector('.today');
@@ -36,7 +35,9 @@ const upcoming = document.querySelector('.upcoming');
 upcoming.addEventListener('click', function() { loadUpcoming(upcomingItems) });
 
 const projects = document.querySelector('.projects');
-projects.addEventListener('click', function() { loadProjects(projectList) });
+projects.addEventListener('click', function() { 
+    loadProjects(projectList) 
+});
 
 const notes = document.querySelector('.notes');
 notes.addEventListener('click', function() { loadNotes(notesList) });
@@ -57,6 +58,168 @@ let noteForm = document.querySelector('.note');
 noteForm.addEventListener('click', displayNote);
 
 
+//Adds handlers for submission of the forms
+var formToDo = document.querySelector('.toDo-Form');
+var formProject = document.querySelector('.projectForm');
+var formNote = document.querySelector('.noteForm');
+
+formToDo.addEventListener('submit', processToDoForm);
+formProject.addEventListener('submit', processProjectForm);
+/*formNote.addEventListener('submit', processNoteForm);*/
+
+/**
+ * 
+ * @param {event} e The form submission
+ */
+function processToDoForm(e)
+{
+    e.preventDefault();
+
+    //Get the title from the form
+    let title = document.querySelector('.toDo-Form').elements[1].value;
+
+    //Get the date from the form
+    let date = document.querySelector('.toDo-Form').elements[2].value.split('-');
+
+    //Convert the date to a Date object
+    let d = new Date(date[0], date[1] - 1, date[2]);
+
+    //Check if submitted date is prior to today's date
+    if (d.getTime() < currentDate.getTime())
+    {
+        //Do not accept if so
+        alert("Please enter a current or upcoming date.");
+        return;
+    }
+
+    //Get the description from the form
+    let description = document.querySelector('.toDo-Form').elements[3].value;
+    
+    //Get the priority from the form
+    let priority = document.querySelector('.toDo-Form').elements[4].value;
+    
+    //Get the project from the form
+    let project = document.querySelector('.toDo-Form').elements[5].value;
+
+    //Check if the date entered is for today if the selected tab is today
+    if (project == 'today')
+    {
+        if (d.getTime() !== currentDate.getTime())
+        {
+            //Don't accept if not
+            alert("For a To-Do to be in the today tab, it must have today's date.")
+            return;
+        }
+    }
+
+    //Clear the form of data and hide it
+    document.querySelector('.toDo-Form').reset();
+    document.getElementById("popupForm").style.display = "none";
+
+    //Create a new ToDo item
+    let newToDo = todoItemFactory(title, description, date, priority);
+
+    //Place the to do item in the correct tab
+    placeNewItem(newToDo, project);
+}
+
+
+function processProjectForm(e)
+{
+    e.preventDefault();
+
+    //Get the title from form submission
+    let title = document.querySelector('.projectForm').elements[1].value;
+
+    //Identify the project options in the ToDo form
+    let projects = document.getElementById('projectOptions');
+
+    //Create the new option
+    let newOption = document.createElement('option');
+    newOption.textContent = title;
+    newOption.value = title;
+
+    //Add the new option to the form
+    projects.appendChild(newOption);
+
+    //Add the new project to the sub-menu
+    const subMenu = document.querySelector('.projectSubMenu')
+
+    const subMenuOption = document.createElement('li');
+    subMenuOption.classList.add('projectOption');
+    subMenuOption.textContent = title;
+
+    subMenu.appendChild(subMenuOption);
+
+    //Reset the form and hide it
+    document.querySelector('.projectForm').reset();
+    document.getElementById("popupForm").style.display = "none";
+}
+
+
+/**
+ * 
+ * @param {Object} newToDo The newly created ToDo Item
+ * @param {string} project Identifier for which tab the Item belongs in
+ */
+function placeNewItem(newToDo, project)
+{
+    //Identifies if the Item belongs in the Today tab
+    if (project == 'today')
+    {
+        //If empty, just display it
+        if (todaysItems.length == 0)
+        {
+            todaysItems.push(newToDo);
+            loadToday(todaysItems);
+        }
+
+        //Else, add it and sort the list by decreasing priority, then display
+        else
+        {
+
+        }
+    }
+
+    //Identifies if the Item belongs in the upcoming tab
+    else if (project == 'upcoming')
+    {
+        //If empty, just display it
+        if (upcomingItems.length == 0)
+        {
+            upcomingItems.push(newToDo);
+            loadUpcoming(upcomingItems);
+        }
+
+        //Else, add it and sort the list by decreasing priority, then display
+        else
+        {
+
+        }
+    }
+
+    //If not today or upcoming, place in the appropriate user created project tab
+    else
+    {
+        //Determine what the project is
+
+
+        //If empty, just display it
+        if (something.length == 0)
+        {
+            something.push(newToDo);
+            loadSomething(something);
+        }
+
+        //Else, add it and sort the list by decreasing priority, then display
+        else
+        {
+
+        }
+    }
+}
+
+
 /**
  * This function displays the To-Do item form. It is closable by clicking
  * the X in the top right of the form. The user must enter a title, date,
@@ -73,9 +236,6 @@ function displayToDo()
         document.querySelector('.toDo-Form').reset();
         document.getElementById("popupForm").style.display = "none";
     });
-
-    //Update current tab
-    currentTab = 'ToDo';
 
     //Update the other two buttons to the current form's buttons
     projectForm = document.querySelector('.project');
@@ -96,6 +256,7 @@ function displayToDo()
     document.querySelector('.noteForm').style.display = "none";
 }
 
+
 /**
  * This function displays the project form. The user must enter a title
  * for the Project. The form can be closed by clicking the X button in
@@ -112,9 +273,6 @@ function displayProject()
         document.querySelector('.projectForm').reset();
         document.getElementById("popupForm").style.display = "none";
     });
-
-    //Update the current tab
-    currentTab = 'Project';
 
     //Update the other form buttons to the current form's buttons
     toDoForm = document.querySelector('.toDo2');
@@ -152,9 +310,6 @@ function displayNote()
         document.querySelector('.noteForm').reset();
         document.getElementById("popupForm").style.display = "none";
     });
-
-    //Update the current tab
-    currentTab = 'Note';
 
     //Update the form buttons to the current form's buttons
     toDoForm = document.querySelector('.toDo3');
@@ -196,15 +351,3 @@ function addNew()
 
     document.getElementById("popupForm").style.display = "block";
 }
-
-/**
- * Takes in a string and updates the current page with it.
- * 
- * @param {string}} newPage The now current page
- */
-function updatePage(newPage)
-{
-    currentPage = newPage;
-}
-
-export default updatePage;
