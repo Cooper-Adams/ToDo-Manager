@@ -209,7 +209,13 @@ function placeNewItem(newToDo, project)
         //Else, add it and sort the list by decreasing priority, then display
         else
         {
+            upcomingItems.push(newToDo);
 
+            upcomingItems.sort(function (a, b) {
+                return b.priority - a.priority;
+            });
+
+            loadUpcoming(upcomingItems);
         }
     }
 
@@ -363,5 +369,7 @@ function addNew()
         document.getElementById("popupForm").style.display = "none";
     });
 
+    document.getElementById('datePicker').valueAsDate = new Date();
     document.getElementById("popupForm").style.display = "block";
+    document.getElementById("formTypes").style.display = "flex";
 }
