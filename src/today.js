@@ -35,6 +35,7 @@ function loadToday(todaysItems)
             const displayItem = document.createElement('div');
             displayItem.classList.add('toDoDiv');
 
+
             //Identify priority and give a colored border accordingly
             if (todaysItems[i].priority == 1)
             {
@@ -51,6 +52,7 @@ function loadToday(todaysItems)
                 displayItem.style.borderLeft = '5px solid red';
             }
 
+
             //Add a checkbox that toggles the opacity of the div,
             //gives the "marked off" feeling
             const checkBox = document.createElement('input');
@@ -59,25 +61,134 @@ function loadToday(todaysItems)
                 displayItem.classList.toggle('checkActive');
             });
 
+
+            //Gets the title for the ToDo item
             const title = document.createElement('span');
             title.textContent = todaysItems[i].title;
 
+
+            //Gets the date for the ToDo item
             const date = document.createElement('span');
             date.textContent = todaysItems[i].dueDate[1] + '/' + todaysItems[i].dueDate[2] + '/' + todaysItems[i].dueDate[0];
 
+
+            //Gets the popup box for the details
+            const detailDiv = document.querySelector('.loginPopup');
+
+            //Creates a new box to display the details
+            const detailDisplay = document.createElement('div');
+            detailDisplay.classList.add('formPopup');
+
+            const detailForm = document.createElement('div');
+            detailForm.classList.add('displayForm');
+
+            //Creates the box header and its text/button
+            const detailHeader = document.createElement('div');
+            detailHeader.classList.add('formHeader');
+
+            const detailHeaderText = document.createElement('h2');
+            detailHeaderText.textContent = 'Details';
+
+            const detailCloseButton = document.createElement('button');
+            detailCloseButton.textContent = 'X';
+            detailCloseButton.addEventListener('click', function()
+            {
+                detailDisplay.style.display = 'none';
+            })
+
+
+            //Add the header text and the button to the header div
+            detailHeader.appendChild(detailHeaderText);
+            detailHeader.appendChild(detailCloseButton);
+
+
+            //Create content div for the display details
+            const detailContent = document.createElement('div');
+            detailContent.classList.add('displayContent');
+
+
+            //Gets the data for the current ToDo details
+            const detailTitle = document.createElement('h1');
+            detailTitle.textContent = 'Title: ' + todaysItems[i].title;
+
+            const detailDate = document.createElement('span');
+            detailDate.textContent = 'Date: ' + todaysItems[i].dueDate[1] + '/' + todaysItems[i].dueDate[2] + '/' + todaysItems[i].dueDate[0];
+
+            const detailPriority = document.createElement('span');
+            if (todaysItems[i].priority == 1) 
+            { detailPriority.textContent = 'Priority: Low'; }
+            
+            else if (todaysItems[i].priority == 2) 
+            { detailPriority.textContent = 'Priority: Medium'; }
+            
+            else
+            { detailPriority.textContent = 'Priority: High'; }
+
+            const detailDescrip = document.createElement('span');
+            detailDescrip.textContent = 'Description: ' + todaysItems[i].description;
+
+
+            //Adds the ToDo's details to the detail content box
+            detailContent.appendChild(detailTitle);
+            detailContent.appendChild(detailDate);
+            detailContent.appendChild(detailPriority);
+            detailContent.appendChild(detailDescrip);
+
+
+            //Adds the header and content display to the wrapper
+            detailForm.appendChild(detailHeader);
+            detailForm.appendChild(detailContent);
+
+
+            //Adds the wrapper to the detail display
+            detailDisplay.appendChild(detailForm);
+
+
+            //Add the box to the parent box
+            detailDiv.appendChild(detailDisplay);
+
+
+            //Button to display ToDo's full details
             const details = document.createElement('button');
             details.textContent = 'Details';
+            details.addEventListener('click', function()
+            {
+                detailDisplay.style.display = 'block';
+            });
 
+
+            //Button that allows the user to edit a ToDo's details
             const edit = document.createElement('button');
             edit.textContent = '✎';
+            edit.setAttribute('id', i);
+            edit.addEventListener('click', function(e)
+            {
+                document.getElementById("popupForm").style.display = "block";
+                document.getElementById("formTypes").style.display = "none";
 
+                document.getElementById('titleField').value = todaysItems[e.target.id].title;
+
+                document.getElementById('datePicker').valueAsDate = new Date(todaysItems[i].dueDate[0], todaysItems[i].dueDate[1] - 1, todaysItems[i].dueDate[2]);
+                
+                document.getElementById('descripField').value = todaysItems[e.target.id].description;
+                document.getElementById('priorityField').value = todaysItems[e.target.id].priority;
+                document.getElementById('projectField').value = 'today';
+
+                //Remove item from list
+                todaysItems.splice(e.target.id, 1);
+            });
+
+
+            //Button that allows the user to delete a ToDo item
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'X';
             deleteButton.setAttribute('id', i);
             deleteButton.addEventListener('click', function(e) 
             {
+                //Remove item from list
                 todaysItems.splice(e.target.id, 1);
 
+                //If list is empty, remove content from ToDo display
                 if (todaysItems.length == 0)
                 {
                     while (todoContent.children.length >= 1)
@@ -86,14 +197,19 @@ function loadToday(todaysItems)
                     }
                 }
 
+                //Reload the today tab
                 loadToday(todaysItems);
             });
 
+
+            //Groups the checkbox and title in the left of the item display
             const leftSide = document.createElement('div');
             leftSide.classList.add('leftBox');
             leftSide.appendChild(checkBox);
             leftSide.appendChild(title);
 
+
+            //Groups the rest of the content in the right of the item display
             const rightSide = document.createElement('div');
             rightSide.classList.add('rightBox');
             rightSide.appendChild(date);
@@ -105,6 +221,7 @@ function loadToday(todaysItems)
             //Add the elements to the toDo div
             displayItem.appendChild(leftSide);
             displayItem.appendChild(rightSide);
+
 
             //Add the div to the screen
             todoContent.appendChild(displayItem);
