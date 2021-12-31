@@ -25,22 +25,22 @@
 
                     <ul>
                         <li>
-                            <input type="text" name="field1" class="field-style field-split align-left" placeholder="Title" required maxlength="40"/>
-                            <input type="date" name="field2" class="field-style field-split align-right" required />  
+                            <input type="text" id = "titleField" name="field1" class="field-style field-split align-left" placeholder="Title" required maxlength="40"/>
+                            <input type="date" id = "datePicker" name="field2" class="field-style field-split align-right" required />  
                         </li>
                                 
                         <li>
-                            <textarea name="field5" class="field-style" placeholder="Description"></textarea>
+                            <textarea name="field5" id = "descripField" class="field-style" placeholder="Description"></textarea>
                         </li>
 
                         <li>
-                            <select class="field-style field-split align-left" id = "priorities">
+                            <select id = "priorityField" class="field-style field-split align-left" id = "priorities">
                                 <option value = "1">Low</option>
                                 <option value = "2">Medium</option>
                                 <option value = "3">High</option>
                             </select>
 
-                            <select class = "field-style field-split align-right" id = "projectOptions">
+                            <select id = "projectField" class = "field-style field-split align-right" id = "projectOptions">
                                 <option value="today">Today</option>
                                 <option value="upcoming">Upcoming</option>
                             </select>
