@@ -1,27 +1,31 @@
 html, body {
     margin: 0;
     height: 100%;
+    overflow: hidden;
 }
 
 .content {
     display: flex;
     flex-flow: column;
     height: 100%;
+    overflow: hidden;
 }
 
 .header {
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     padding: 10px 0px 10px 50px;
     font-size: xx-large;
     text-align: left;
     background: #305A72;
     border-bottom: 2px solid black;
+    overflow: hidden;
 }
 
 .mainContent {
     flex: 1 1 auto;
     display: flex;
     background-color: black;
+    overflow: hidden;
 }
 
 .menu {
@@ -29,6 +33,7 @@ html, body {
     background-color: rgb(202, 200, 200);
     border-right: 2px solid black;
     font-size: x-large;
+    overflow: hidden;
 }
 
 .menu ul {
@@ -62,9 +67,11 @@ html, body {
 
 .todoContent {
     width: 75%;
+    height: 100%;
     background-color: white;
     padding: 10px;
     text-align: center;
+    overflow: scroll;
 }
 
 /*Styles the header text and its background on the forms*/
@@ -123,6 +130,32 @@ html, body {
 .formContent {
     display: flex;
     flex-flow: row;
+}
+
+/*Styles the display shown when a user clicks the Details button on an item*/
+.displayContent {
+    background-color: white;
+    display: flex;
+    flex-flow: column;
+    min-width: 400px;
+    min-height: 275px;
+    max-height: 300px;
+    text-align: left;
+	padding: 10px;
+    gap: 10px;
+	margin:0;
+  	overflow: scroll;
+}
+
+.displayForm {
+    display: flex;
+    flex-flow: column;
+	max-width: 600px;
+	background: #FAFAFA;
+	margin: 50px auto;
+	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+	border-radius: 10px;
+	border: 6px solid #305A72; 
 }
 
 .toDo-Form {
@@ -243,15 +276,11 @@ html, body {
 	box-shadow: inset 0px 1px 0px 0px #3985B1;
 	background-color: #216288;
 	border: 1px solid #17445E;
-	display: inline-block;
 	cursor: pointer;
 	color: #FFFFFF;
 	padding: 8px 18px;
 	text-decoration: none;
 	font: 12px Arial, Helvetica, sans-serif;
-    position: fixed;
-    left: 45%; 
-    bottom: 15%;
 }
 
 .toDo-Form ul li input[type="button"]:hover, 
@@ -304,6 +333,7 @@ html, body {
     justify-content: space-between;
     align-items: center;
     font-size: x-large;
+    margin-top: 10px;
 }
 
 .toDoDiv button {
