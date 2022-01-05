@@ -10,10 +10,14 @@ function loadToday(todaysItems)
 {
     const todoContent = document.querySelector('.todoContent');
 
-    //console.log(todaysItems.length);
-
     if (todaysItems.length == 0)
     {
+        //Removes previous tab's content
+        while (todoContent.children.length >= 1)
+        {
+            todoContent.children[0].remove();
+        }
+
         const messageDiv = document.createElement('div');
 
         messageDiv.textContent = "There's nothing here! Click the plus symbol in the menu to add a new item.";
@@ -165,6 +169,7 @@ function loadToday(todaysItems)
             {
                 document.getElementById("popupForm").style.display = "block";
                 document.getElementById("formTypes").style.display = "none";
+                document.querySelector('.closeButton').style.display = "none";
 
                 document.getElementById('titleField').value = todaysItems[e.target.id].title;
 
@@ -174,7 +179,6 @@ function loadToday(todaysItems)
                 document.getElementById('priorityField').value = todaysItems[e.target.id].priority;
                 document.getElementById('projectField').value = 'today';
 
-                //Remove item from list
                 todaysItems.splice(e.target.id, 1);
             });
 
