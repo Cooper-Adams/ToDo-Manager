@@ -3,7 +3,7 @@ import loadNotes from './notes';
 import loadProjects from './projects';
 import loadToday from './today';
 import loadUpcoming from './upcoming';
-import {processToDoForm, processProjectForm} from './forms';
+import {processToDoForm, processProjectForm, processNoteForm} from './forms';
 import './style.css';
 
 //By default, the item arrays are empty, but logic should be added to save
@@ -25,10 +25,14 @@ loadToday(todaysItems);
 
 //On click, pull up corresponding tab/action for the menu item
 const today = document.querySelector('.today');
-today.addEventListener('click', function() { loadToday(todaysItems) });
+today.addEventListener('click', function() { 
+    loadToday(todaysItems) 
+});
 
 const upcoming = document.querySelector('.upcoming');
-upcoming.addEventListener('click', function() { loadUpcoming(upcomingItems) });
+upcoming.addEventListener('click', function() { 
+    loadUpcoming(upcomingItems) 
+});
 
 const projects = document.querySelector('.projects');
 projects.addEventListener('click', function() { 
@@ -54,7 +58,7 @@ document.querySelector('.note').addEventListener('click', displayNote);
 //Adds handlers for submission of the forms
 document.querySelector('.toDo-Form').addEventListener('submit', processToDoForm);
 document.querySelector('.projectForm').addEventListener('submit', processProjectForm);
-//document.querySelector('.noteForm').addEventListener('submit', processNoteForm);
+document.querySelector('.noteForm').addEventListener('submit', processNoteForm);
 
 
 /**
@@ -110,6 +114,13 @@ function placeNewItem(newToDo, project)
         }
     }
 
+    else if (project == 'notes')
+    {
+        notesList.unshift(newToDo);
+
+        loadNotes(notesList);
+    }
+
     //If not today or upcoming, place in the appropriate user created project tab
     else
     {
@@ -150,8 +161,8 @@ function displayToDo()
     });
 
     //Update the other two buttons to the current form's buttons
-    projectForm = document.querySelector('.project');
-    noteForm = document.querySelector('.note');
+    const projectForm = document.querySelector('.project');
+    const noteForm = document.querySelector('.note');
 
     //Update button event listeners
     projectForm.addEventListener('click', displayProject);
@@ -166,6 +177,8 @@ function displayToDo()
     document.querySelector('.toDo-Form').style.display = "flex";
     document.querySelector('.projectForm').style.display = "none";
     document.querySelector('.noteForm').style.display = "none";
+
+    document.getElementById('datePicker').valueAsDate = new Date();
 }
 
 
@@ -187,8 +200,8 @@ function displayProject()
     });
 
     //Update the other form buttons to the current form's buttons
-    toDoForm = document.querySelector('.toDo2');
-    noteForm = document.querySelector('.note2');
+    const toDoForm = document.querySelector('.toDo2');
+    const noteForm = document.querySelector('.note2');
 
     //Update button event listeners
     toDoForm.addEventListener('click', displayToDo);
@@ -224,8 +237,8 @@ function displayNote()
     });
 
     //Update the form buttons to the current form's buttons
-    toDoForm = document.querySelector('.toDo3');
-    projectForm = document.querySelector('.project3');
+    const toDoForm = document.querySelector('.toDo3');
+    const projectForm = document.querySelector('.project3');
 
     //Update button event listeners
     toDoForm.addEventListener('click', displayToDo);
