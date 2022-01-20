@@ -80,16 +80,16 @@ function processProjectForm(e)
     let title = document.querySelector('.projectForm').elements[1].value;
  
     //Identify the project options in the ToDo form
-    let projects = document.getElementById('projectOptions');
+    let projects = document.getElementById('projectField');
  
     //Create the new option
     let newOption = document.createElement('option');
     newOption.textContent = title;
     newOption.value = title;
- 
+
     //Add the new option to the form
     projects.appendChild(newOption);
- 
+
     //Add the new project to the sub-menu
     const subMenu = document.querySelector('.projectSubMenu')
  
@@ -98,11 +98,38 @@ function processProjectForm(e)
     subMenuOption.textContent = title;
  
     subMenu.appendChild(subMenuOption);
- 
+
     //Reset the form and hide it
     document.querySelector('.projectForm').reset();
     document.getElementById("popupForm").style.display = "none";
 }
 
 
-export {processToDoForm, processProjectForm};
+/**
+ * Processes the data of the Project form. Takes the title and creates
+ * a new option in the ToDo form, then adds a new option to the projects
+ * submenu.
+ * 
+ * @param {Event} e The form submission event
+ */
+function processNoteForm(e)
+{
+    e.preventDefault();
+  
+    //Get the note header from form submission
+    let header = document.querySelector('.noteForm').elements[1].value;
+  
+    //Get the note description from form submission
+    let description = document.querySelector('.noteForm').elements[2].value;
+
+    //Create new note
+    let newNote = noteFactory(header, description);
+
+    placeNewItem(newNote, 'notes');
+ 
+    //Reset the form and hide it
+    document.querySelector('.noteForm').reset();
+    document.getElementById("popupForm").style.display = "none";
+}
+
+export {processToDoForm, processProjectForm, processNoteForm};
