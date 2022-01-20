@@ -367,3 +367,67 @@ html, body {
     gap: 15px;
     padding-right: 10px;
 }
+
+.noteDiv {
+    display: flex;
+}
+
+.column {
+    width: 33.33%;
+    padding: 0 10px;
+}
+
+.column1 {
+    padding-left: 0;
+}
+
+.column1 .noteBox:first-child {
+    margin-top: 0;
+}
+
+.column2 .noteBox:first-child {
+    margin-top: 0;
+}
+
+.column3 {
+    padding-right: 0;
+}
+
+.column3 .noteBox:first-child {
+    margin-top: 0;
+}
+
+.noteBox {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    height: fit-content;
+    padding: 0rem 2rem 2rem 2rem;
+    margin-top: 20px;
+    background-color: rgb(202, 200, 200);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    border: 2px solid #17445E;
+}
+
+.noteBox:hover {
+    transform: scale(1.005);
+	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    transition: all .2s ease-out;
+}
+
+.noteBox button {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 7px;
+    right: 8px;
+}
+
+.noteBox button:hover {
+    cursor: pointer;
+}
+
+.noteBox button:active {
+    transform: scale(.8);
+}
