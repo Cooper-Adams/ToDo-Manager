@@ -93,15 +93,20 @@ function processProjectForm(e)
     //Add the new project to the sub-menu
     const subMenu = document.querySelector('.projectSubMenu')
  
-    const subMenuOption = document.createElement('li');
+    const subMenuOption = document.createElement('span');
     subMenuOption.classList.add('projectOption');
     subMenuOption.textContent = title;
+
+    console.log(subMenuOption.textContent)
  
     subMenu.appendChild(subMenuOption);
 
     //Reset the form and hide it
     document.querySelector('.projectForm').reset();
     document.getElementById("popupForm").style.display = "none";
+
+    //Places the new project in the projects list
+    //placeNewItem(title, title);
 }
 
 
