@@ -1,6 +1,6 @@
 const { default: loadPage } = require("./pageLoad");
 import loadNotes from './notes';
-import loadProjects from './projects';
+import {loadProjects, loadProjectToDo} from './projects';
 import loadToday from './today';
 import loadUpcoming from './upcoming';
 import {processToDoForm, processProjectForm, processNoteForm} from './forms';
@@ -40,7 +40,9 @@ projects.addEventListener('click', function() {
 });
 
 const notes = document.querySelector('.notes');
-notes.addEventListener('click', function() { loadNotes(notesList) });
+notes.addEventListener('click', function() { 
+    loadNotes(notesList)
+});
 
 const button = document.querySelector('.addButton');
 button.addEventListener('click', addNew);
@@ -63,10 +65,10 @@ document.querySelector('.noteForm').addEventListener('submit', processNoteForm);
 
 /**
  * 
- * @param {Object} newToDo The newly created ToDo Item
+ * @param {Object} newItem The newly created ToDo/note/project Item
  * @param {string} project Identifier for which tab the Item belongs in
  */
-function placeNewItem(newToDo, project)
+function placeNewItem(newItem, project)
 {
     //Identifies if the Item belongs in the Today tab
     if (project == 'today')
@@ -74,14 +76,14 @@ function placeNewItem(newToDo, project)
         //If empty, just display it
         if (todaysItems.length == 0)
         {
-            todaysItems.push(newToDo);
+            todaysItems.push(newItem);
             loadToday(todaysItems);
         }
 
         //Else, add it and sort the list by decreasing priority, then display
         else
         {
-            todaysItems.push(newToDo);
+            todaysItems.push(newItem);
 
             todaysItems.sort(function (a, b) {
                 return b.priority - a.priority;
@@ -97,14 +99,14 @@ function placeNewItem(newToDo, project)
         //If empty, just display it
         if (upcomingItems.length == 0)
         {
-            upcomingItems.push(newToDo);
+            upcomingItems.push(newItem);
             loadUpcoming(upcomingItems);
         }
 
         //Else, add it and sort the list by decreasing priority, then display
         else
         {
-            upcomingItems.push(newToDo);
+            upcomingItems.push(newItem);
 
             upcomingItems.sort(function (a, b) {
                 return b.priority - a.priority;
@@ -114,9 +116,10 @@ function placeNewItem(newToDo, project)
         }
     }
 
+    //Append the note to the front of the noteslist and load the notes page
     else if (project == 'notes')
     {
-        notesList.unshift(newToDo);
+        notesList.unshift(newItem);
 
         loadNotes(notesList);
     }
@@ -124,13 +127,16 @@ function placeNewItem(newToDo, project)
     //If not today or upcoming, place in the appropriate user created project tab
     else
     {
-        //Determine what the project is
+        /*
+        let newProject = 
 
+        //Determine what the project is
+        projectList.push(title);   
 
         //If empty, just display it
         if (something.length == 0)
         {
-            something.push(newToDo);
+            something.push(newItem);
             loadSomething(something);
         }
 
@@ -138,7 +144,7 @@ function placeNewItem(newToDo, project)
         else
         {
 
-        }
+        }*/
     }
 }
 
