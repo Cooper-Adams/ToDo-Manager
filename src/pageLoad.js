@@ -34,21 +34,21 @@ function loadPage()
     upcoming.textContent = "Upcoming";
     ul.appendChild(upcoming);
 
-    const projects = document.createElement('span');
-    projects.classList.add('projects');
-    projects.textContent = "Projects";
-
-    const pul = document.createElement('ul');
-    pul.classList.add('projectSubMenu');
-
-    projects.appendChild(pul);
-
-    ul.appendChild(projects);
-
     const notes = document.createElement('span');
     notes.classList.add('notes');
     notes.textContent = "Notes";
     ul.appendChild(notes);
+
+    const projects = document.createElement('span');
+    projects.classList.add('projects');
+    projects.textContent = "Projects";
+
+    ul.appendChild(projects);
+
+    const pul = document.createElement('div');
+    pul.classList.add('projectSubMenu');
+
+    ul.appendChild(pul);
 
     const add = document.createElement('button');
     add.classList.add('addButton');
