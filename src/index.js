@@ -1,8 +1,6 @@
 const { default: loadPage } = require("./pageLoad");
 import loadNotes from './notes';
-import {loadProjects, loadProjectToDo} from './projects';
-import loadToday from './today';
-import loadUpcoming from './upcoming';
+import loadToDoItems from './toDo';
 import {processToDoForm, processProjectForm, processNoteForm} from './forms';
 import './style.css';
 
@@ -13,30 +11,30 @@ let todaysItems = [];
 let upcomingItems = [];
 let projectList = [];
 let notesList = [];
+let projectNames = [];
 
+//0 is the index for today's items, then 1 for upcoming, then afterwards
+//the indexes will represent user created projects
+projectList.push(todaysItems);
+projectList.push(upcomingItems);
 
 //Loads the "barebones" of the page: the Header, the Menu, and the colors.
 loadPage();
 
 
 //Loads the Today tab by default
-loadToday(todaysItems);
+loadToDoItems(projectList[0]);
 
 
 //On click, pull up corresponding tab/action for the menu item
 const today = document.querySelector('.today');
 today.addEventListener('click', function() { 
-    loadToday(todaysItems) 
+    loadToDoItems(projectList[0])
 });
 
 const upcoming = document.querySelector('.upcoming');
 upcoming.addEventListener('click', function() { 
-    loadUpcoming(upcomingItems) 
-});
-
-const projects = document.querySelector('.projects');
-projects.addEventListener('click', function() { 
-    loadProjects(projectList) 
+    loadToDoItems(projectList[1]) 
 });
 
 const notes = document.querySelector('.notes');
@@ -74,22 +72,22 @@ function placeNewItem(newItem, project)
     if (project == 'today')
     {
         //If empty, just display it
-        if (todaysItems.length == 0)
+        if (projectList[0].length == 0)
         {
-            todaysItems.push(newItem);
-            loadToday(todaysItems);
+            projectList[0].push(newItem);
+            loadToDoItems(projectList[0]);
         }
 
         //Else, add it and sort the list by decreasing priority, then display
         else
         {
-            todaysItems.push(newItem);
+            projectList[0].push(newItem);
 
-            todaysItems.sort(function (a, b) {
+            projectList[0].sort(function (a, b) {
                 return b.priority - a.priority;
             });
 
-            loadToday(todaysItems);
+            loadToDoItems(projectList[0]);
         }
     }
 
@@ -97,22 +95,22 @@ function placeNewItem(newItem, project)
     else if (project == 'upcoming')
     {
         //If empty, just display it
-        if (upcomingItems.length == 0)
+        if (projectList[1].length == 0)
         {
-            upcomingItems.push(newItem);
-            loadUpcoming(upcomingItems);
+            projectList[1].push(newItem);
+            loadToDoItems(projectList[1]);
         }
 
         //Else, add it and sort the list by decreasing priority, then display
         else
         {
-            upcomingItems.push(newItem);
+            projectList[1].push(newItem);
 
-            upcomingItems.sort(function (a, b) {
+            projectList[1].sort(function (a, b) {
                 return b.priority - a.priority;
             });
 
-            loadUpcoming(upcomingItems);
+            loadToDoItems(projectList[1]);
         }
     }
 
@@ -124,27 +122,48 @@ function placeNewItem(newItem, project)
         loadNotes(notesList);
     }
 
-    //If not today or upcoming, place in the appropriate user created project tab
     else
     {
-        /*
-        let newProject = 
-
-        //Determine what the project is
-        projectList.push(title);   
-
-        //If empty, just display it
-        if (something.length == 0)
+        //Checks if the project name exists, and if so adds the new item
+        //to that project list
+        for (let i = 0; i < projectNames.length; ++i)
         {
-            something.push(newItem);
-            loadSomething(something);
+            if (project == projectNames[i])
+            {
+                if (projectList[i + 2].length == 0)
+                {
+                    projectList[i + 2].push(newItem);
+
+                    loadToDoItems(projectList[i + 2]);
+                }
+
+                else
+                {
+                    projectList[i + 2].push(newItem);
+
+                    projectList[i + 2].sort(function (a, b) {
+                        return b.priority - a.priority;
+                    });
+
+                    loadToDoItems(projectList[i + 2]);
+                }
+
+                const projectOption = document.getElementById(project);
+                projectOption.addEventListener('click', function() {
+                    loadToDoItems(projectList[i + 2])
+                });
+
+                return;
+            }
         }
 
-        //Else, add it and sort the list by decreasing priority, then display
-        else
-        {
+        //If the project doesn't exist, create the array for it and add it
+        //to the project list, saving the name as well for data preservation
+        let newProject = [];
 
-        }*/
+        projectNames.push(project);
+
+        projectList.push(newProject);
     }
 }
 
@@ -285,4 +304,24 @@ function addNew()
     document.getElementById("formTypes").style.display = "flex";
 }
 
-export default placeNewItem;
+/**
+ * Checks if the new project name has already been used by the user, returns
+ * false if so, true if not.
+ * 
+ * @param {string} name The name of the new project to be compared
+ * @returns Boolean, true if valid, false otherwise
+ */
+function isNameValid(name)
+{
+    for (let i = 0; i < projectNames.length; ++i)
+    {
+        if (name == projectNames[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export { placeNewItem, isNameValid };
