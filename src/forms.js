@@ -1,5 +1,5 @@
 import { todoItemFactory, noteFactory } from './items';
-import placeNewItem from './index';
+import { placeNewItem, isNameValid } from './index';
 
 /**
  * Processes the data from the ToDo item form. Contains Date comparison
@@ -41,7 +41,7 @@ function processToDoForm(e)
      
     //Get the project from the form
     let project = document.querySelector('.toDo-Form').elements[5].value;
- 
+
     //Check if the date entered is for today if the selected tab is today
     if (project == 'today')
     {
@@ -78,7 +78,13 @@ function processProjectForm(e)
  
     //Get the title from form submission
     let title = document.querySelector('.projectForm').elements[1].value;
- 
+
+    if (!isNameValid(title))
+    {
+        alert("Project names must be different.");
+        return;
+    }
+
     //Identify the project options in the ToDo form
     let projects = document.getElementById('projectField');
  
@@ -94,10 +100,8 @@ function processProjectForm(e)
     const subMenu = document.querySelector('.projectSubMenu')
  
     const subMenuOption = document.createElement('span');
-    subMenuOption.classList.add('projectOption');
+    subMenuOption.setAttribute('id', title);
     subMenuOption.textContent = title;
-
-    console.log(subMenuOption.textContent)
  
     subMenu.appendChild(subMenuOption);
 
@@ -106,7 +110,7 @@ function processProjectForm(e)
     document.getElementById("popupForm").style.display = "none";
 
     //Places the new project in the projects list
-    //placeNewItem(title, title);
+    placeNewItem(title, title);
 }
 
 
