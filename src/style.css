@@ -41,8 +41,11 @@ html, body {
     justify-content: center;
     align-items: left;
     flex-direction: column;
-    gap: 25px;
     width: 160px;
+}
+
+.upcoming, .notes, .projects {
+    margin-top: 25px;
 }
 
 .menu button {
@@ -74,7 +77,7 @@ html, body {
     background-color: white;
     padding: 10px;
     text-align: center;
-    overflow: scroll;
+    overflow: auto;
 }
 
 /*Styles the header text and its background on the forms*/
@@ -321,18 +324,17 @@ html, body {
 .projectSubMenu {
     max-height: 100px;
     overflow-y: auto;
+    overflow-x: hidden;
     text-align: right;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
-.projectOption {
+.projectSubMenu span {
     font-size: 17px;
     padding-right: 10px;
     cursor: pointer;
-    font-size: medium;
-    overflow-x: auto;
 }
 
 .toDoDiv {
