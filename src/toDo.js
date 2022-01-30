@@ -10,14 +10,14 @@ function loadToDoItems(itemList)
 {
     const todoContent = document.querySelector('.todoContent');
 
+    //Removes previous tab's content
+    while (todoContent.children.length >= 1)
+    {
+        todoContent.children[0].remove();
+    }
+
     if (itemList.length == 0)
     {
-        //Removes previous tab's content
-        while (todoContent.children.length >= 1)
-        {
-            todoContent.children[0].remove();
-        }
-
         const messageDiv = document.createElement('div');
 
         messageDiv.textContent = "There's nothing here! Click the plus symbol in the menu to add a new item.";
@@ -27,12 +27,6 @@ function loadToDoItems(itemList)
 
     else
     {
-        //Removes previous tab's content
-        while (todoContent.children.length >= 1)
-        {
-            todoContent.children[0].remove();
-        }
-
         for (let i = 0; i < itemList.length; ++i)
         {
             //Create div for toDo item
