@@ -3,6 +3,7 @@ import loadNotes from './notes';
 import loadToDoItems from './toDo';
 import {processToDoForm, processProjectForm, processNoteForm} from './forms';
 import './style.css';
+import { noteFactory, todoItemFactory } from './items';
 
 //By default, the item arrays are empty, but logic should be added to save
 //the user's items/projects/notes locally as well as logic to load them
@@ -18,8 +19,10 @@ let projectNames = [];
 projectList.push(todaysItems);
 projectList.push(upcomingItems);
 
+
 //Loads the "barebones" of the page: the Header, the Menu, and the colors.
 loadPage();
+loadData();
 
 
 //Loads the Today tab by default
@@ -45,6 +48,36 @@ notes.addEventListener('click', function() {
 const button = document.querySelector('.addButton');
 button.addEventListener('click', addNew);
 
+const projects = document.querySelector('.projects');
+projects.addEventListener('click', function() {
+    
+    const todoContent = document.querySelector('.todoContent');
+
+    //Removes previous tab's content
+    while (todoContent.children.length >= 1)
+    {
+        todoContent.children[0].remove();
+    }
+    
+    if (projectNames.length == 0)
+    {
+        const messageDiv = document.createElement('div');
+
+        messageDiv.textContent = "There are no projects! Click the plus symbol in the menu to create a new project.";
+        
+        todoContent.appendChild(messageDiv);
+    }
+
+    else
+    {
+        const messageDiv = document.createElement('div');
+
+        messageDiv.textContent = "Choose a project in the menu to view its contents!";
+            
+        todoContent.appendChild(messageDiv);
+    }
+});
+
 
 //Adds handlers for the form buttons, so the user can switch types
 //of forms
@@ -62,6 +95,8 @@ document.querySelector('.noteForm').addEventListener('submit', processNoteForm);
 
 
 /**
+ * Places the new item or note in the correct data section, or creates
+ * a new section to store data if a Project is being added.
  * 
  * @param {Object} newItem The newly created ToDo/note/project Item
  * @param {string} project Identifier for which tab the Item belongs in
@@ -76,6 +111,11 @@ function placeNewItem(newItem, project)
         {
             projectList[0].push(newItem);
             loadToDoItems(projectList[0]);
+
+            localStorage.setItem('todayTitle0', newItem.title);
+            localStorage.setItem('todayDescription0', newItem.description);
+            localStorage.setItem('todayDate0', newItem.dueDate);
+            localStorage.setItem('todayPriority0', newItem.priority);
         }
 
         //Else, add it and sort the list by decreasing priority, then display
@@ -118,6 +158,9 @@ function placeNewItem(newItem, project)
     else if (project == 'notes')
     {
         notesList.unshift(newItem);
+
+        localStorage.setItem('noteTitle' + (notesList.length - 1));
+        localStorage.setItem('noteDescription' + (notesList.length - 1));
 
         loadNotes(notesList);
     }
@@ -164,6 +207,9 @@ function placeNewItem(newItem, project)
         projectNames.push(project);
 
         projectList.push(newProject);
+
+        //Save the updated list of project names
+        localStorage.setItem('projects', projectNames);
     }
 }
 
@@ -322,6 +368,64 @@ function isNameValid(name)
     }
 
     return true;
+}
+
+
+/**
+ * This function retrieves data from the local storage. Data retrieval
+ * includes user created to do items, notes, and projects.
+ */
+function loadData()
+{
+    //Checks if there are user created project names in storage
+    if (localStorage.getItem('projects'))
+    {
+        //Loads in the user created project names
+        projectNames = localStorage.getItem('projects').split(",");
+    }
+
+    //Checks if there are user creates todos or notes in storage
+    for (let i = 0; i < localStorage.length; ++i)
+    {
+        if (localStorage.getItem('todayTitle' + i))
+        {
+            let title = localStorage.getItem('todayTitle' + i);
+            let description = localStorage.getItem('todayDescription' + i);
+            let date = localStorage.getItem('todayDate' + i).split(",");
+            let priority = localStorage.getItem('todayPriority' + i);
+
+            let newToDo = todoItemFactory(title, description, date, priority);
+
+            todaysItems.push(newToDo);
+        }
+
+        if (localStorage.getItem('upcomingTitle' + i))
+        {
+            let title = localStorage.getItem('upcomingTitle' + i);
+            let description = localStorage.getItem('upcomingDescription' + i);
+            let date = localStorage.getItem('upcomingDate' + i).split(",");
+            let priority = localStorage.getItem('upcomingPriority' + i);
+
+            let newToDo = todoItemFactory(title, description, date, priority);
+
+            upcomingItems.push(newToDo);
+        }
+
+        if (localStorage.getItem('noteTitle' + i))
+        {
+            let title = localStorage.getItem('noteTitle' + i);
+            let description = localStorage.getItem('noteDescription' + i);
+
+            let newNote = noteFactory(title, description);
+
+            notesList.unshift(newNote);
+        }
+
+        if (localStorage.getItem('userTitle' + i))
+        {
+            console.log("User Item found");
+        }
+    }
 }
 
 export { placeNewItem, isNameValid };
