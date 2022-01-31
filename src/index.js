@@ -1,4 +1,4 @@
-const { default: loadPage } = require("./pageLoad");
+import loadPage from './pageLoad';
 import loadNotes from './notes';
 import loadToDoItems from './toDo';
 import {processToDoForm, processProjectForm, processNoteForm} from './forms';
@@ -14,8 +14,8 @@ let projectList = [];
 let notesList = [];
 let projectNames = [];
 
-//0 is the index for today's items, then 1 for upcoming, then afterwards
-//the indexes will represent user created projects
+/*0 is the index for today's items, then 1 for upcoming, then 
+afterwards the indexes will represent user created projects*/
 projectList.push(todaysItems);
 projectList.push(upcomingItems);
 
@@ -106,62 +106,57 @@ function placeNewItem(newItem, project)
     //Identifies if the Item belongs in the Today tab
     if (project == 'today')
     {
-        //If empty, just display it
-        if (projectList[0].length == 0)
-        {
-            projectList[0].push(newItem);
-            loadToDoItems(projectList[0]);
+        //Add to list
+        projectList[0].push(newItem);
 
-            localStorage.setItem('todayTitle0', newItem.title);
-            localStorage.setItem('todayDescription0', newItem.description);
-            localStorage.setItem('todayDate0', newItem.dueDate);
-            localStorage.setItem('todayPriority0', newItem.priority);
-        }
+        //Sort list based on priority
+        projectList[0].sort(function (a, b) {
+            return b.priority - a.priority;
+        });
 
-        //Else, add it and sort the list by decreasing priority, then display
-        else
-        {
-            projectList[0].push(newItem);
+        //Save the item
+        localStorage.setItem('todayTitle' + (todaysItems.length - 1), newItem.title);
+        localStorage.setItem('todayDescription' + (todaysItems.length - 1), newItem.description);
+        localStorage.setItem('todayDate' + (todaysItems.length - 1), newItem.dueDate);
+        localStorage.setItem('todayPriority' + (todaysItems.length - 1), newItem.priority);
 
-            projectList[0].sort(function (a, b) {
-                return b.priority - a.priority;
-            });
-
-            loadToDoItems(projectList[0]);
-        }
+        //Load the today tab of items
+        loadToDoItems(projectList[0]);
     }
 
     //Identifies if the Item belongs in the upcoming tab
     else if (project == 'upcoming')
     {
-        //If empty, just display it
-        if (projectList[1].length == 0)
-        {
-            projectList[1].push(newItem);
-            loadToDoItems(projectList[1]);
-        }
+        //Add to list
+        projectList[1].push(newItem);
 
-        //Else, add it and sort the list by decreasing priority, then display
-        else
-        {
-            projectList[1].push(newItem);
+        //Sort list based on priority
+        projectList[1].sort(function (a, b) {
+            return b.priority - a.priority;
+        });
 
-            projectList[1].sort(function (a, b) {
-                return b.priority - a.priority;
-            });
+        //Save the item
+        localStorage.setItem('upcomingTitle' + (upcomingItems.length - 1), newItem.title);
+        localStorage.setItem('upcomingDescription' + (upcomingItems.length - 1), newItem.description);
+        localStorage.setItem('upcomingDate' + (upcomingItems.length - 1), newItem.dueDate);
+        localStorage.setItem('upcomingPriority' + (upcomingItems.length - 1), newItem.priority);
 
-            loadToDoItems(projectList[1]);
-        }
+        //Load the upcoming tab of items
+        loadToDoItems(projectList[1]);
     }
 
-    //Append the note to the front of the noteslist and load the notes page
+    //Append the note to the front of the notesList, loads the notes page,
+    //and saves the note locally
     else if (project == 'notes')
     {
+        //Add note to front of list
         notesList.unshift(newItem);
 
-        localStorage.setItem('noteTitle' + (notesList.length - 1));
-        localStorage.setItem('noteDescription' + (notesList.length - 1));
+        //Save the note
+        localStorage.setItem('noteTitle' + (notesList.length - 1), newItem);
+        localStorage.setItem('noteDescription' + (notesList.length - 1), newItem);
 
+        //Load the notes tab of notes
         loadNotes(notesList);
     }
 
@@ -173,24 +168,25 @@ function placeNewItem(newItem, project)
         {
             if (project == projectNames[i])
             {
-                if (projectList[i + 2].length == 0)
-                {
-                    projectList[i + 2].push(newItem);
+                //Add to the list
+                projectList[i + 2].push(newItem);
 
-                    loadToDoItems(projectList[i + 2]);
-                }
+                //Sort the list based on priority
+                projectList[i + 2].sort(function (a, b) {
+                    return b.priority - a.priority;
+                });
 
-                else
-                {
-                    projectList[i + 2].push(newItem);
+                //Save the item
+                localStorage.setItem('userTitle' + (projectList[i + 2].length - 1), newItem.title);
+                localStorage.setItem('userDescription' + (projectList[i + 2].length - 1), newItem.description);
+                localStorage.setItem('userDate' + (projectList[i + 2].length - 1), newItem.dueDate);
+                localStorage.setItem('userPriority' + (projectList[i + 2].length - 1), newItem.priority);
+                localStorage.setItem('userProject' + (projectList[i + 2].length - 1), newItem.project);
 
-                    projectList[i + 2].sort(function (a, b) {
-                        return b.priority - a.priority;
-                    });
+                //Load the user created tabs items
+                loadToDoItems(projectList[i + 2]);
 
-                    loadToDoItems(projectList[i + 2]);
-                }
-
+                //Give the project option in the menu clickability
                 const projectOption = document.getElementById(project);
                 projectOption.addEventListener('click', function() {
                     loadToDoItems(projectList[i + 2])
@@ -382,9 +378,43 @@ function loadData()
     {
         //Loads in the user created project names
         projectNames = localStorage.getItem('projects').split(",");
+
+        for (let i = 0; i < projectNames.length; ++i)
+        {
+            //Create new list and add it to the project list
+            let newList = [];
+            projectList.push(newList);
+
+            //Identify the project options in the ToDo form
+            let projects = document.getElementById('projectField');
+        
+            //Create the new option
+            let newOption = document.createElement('option');
+            newOption.textContent = projectNames[i];
+            newOption.value = projectNames[i];
+
+            //Add the new option to the form
+            projects.appendChild(newOption);
+
+            //Identify the menu
+            const subMenu = document.querySelector('.projectSubMenu')
+ 
+            //Create the menu option
+            const subMenuOption = document.createElement('span');
+            subMenuOption.setAttribute('id', projectNames[i]);
+            subMenuOption.textContent = projectNames[i];
+        
+            //Give functionality to the menu option
+            subMenuOption.addEventListener('click', function() {
+                loadToDoItems(projectList[i + 2]);
+            });
+
+            //Add the option to the menu
+            subMenu.appendChild(subMenuOption);
+        }
     }
 
-    //Checks if there are user creates todos or notes in storage
+    //Checks if there are user created todos or notes in local storage
     for (let i = 0; i < localStorage.length; ++i)
     {
         if (localStorage.getItem('todayTitle' + i))
@@ -394,7 +424,7 @@ function loadData()
             let date = localStorage.getItem('todayDate' + i).split(",");
             let priority = localStorage.getItem('todayPriority' + i);
 
-            let newToDo = todoItemFactory(title, description, date, priority);
+            let newToDo = todoItemFactory(title, description, date, priority, 'today');
 
             todaysItems.push(newToDo);
         }
@@ -406,9 +436,42 @@ function loadData()
             let date = localStorage.getItem('upcomingDate' + i).split(",");
             let priority = localStorage.getItem('upcomingPriority' + i);
 
-            let newToDo = todoItemFactory(title, description, date, priority);
+            let newToDo = todoItemFactory(title, description, date, priority, 'upcoming');
 
             upcomingItems.push(newToDo);
+        }
+
+        if (localStorage.getItem('userTitle' + i))
+        {
+            let title = localStorage.getItem('userTitle' + i);
+            let description = localStorage.getItem('userDescription' + i);
+            let date = localStorage.getItem('userDate' + i).split(",");
+            let priority = localStorage.getItem('userPriority' + i);
+            let project = localStorage.getItem('userProject' + i);
+
+            let newToDo = todoItemFactory(title, description, date, priority, project);
+
+            //This probably isnt needed lol
+            let doesExist = false;
+
+            for (let j = 0; j < projectNames.length; ++j)
+            {
+                if (project == projectNames[j])
+                {
+                    doesExist = true;
+
+                    projectList[j + 2].push(newToDo);
+                }
+            }
+
+            if (!doesExist)
+            {
+                let newList = [];
+
+                newList.push(newToDo);
+
+                projectList.push(newList);
+            }
         }
 
         if (localStorage.getItem('noteTitle' + i))
@@ -419,11 +482,6 @@ function loadData()
             let newNote = noteFactory(title, description);
 
             notesList.unshift(newNote);
-        }
-
-        if (localStorage.getItem('userTitle' + i))
-        {
-            console.log("User Item found");
         }
     }
 }
