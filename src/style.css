@@ -442,3 +442,7 @@ html, body {
 .noteBox button:active {
     transform: scale(.8);
 }
+
+.projects:hover {
+    cursor: default;
+}
