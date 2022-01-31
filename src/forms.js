@@ -58,7 +58,7 @@ function processToDoForm(e)
     document.getElementById("popupForm").style.display = "none";
  
     //Create a new ToDo item
-    let newToDo = todoItemFactory(title, description, date, priority);
+    let newToDo = todoItemFactory(title, description, date, priority, project);
  
     //Place the to do item in the correct tab
     placeNewItem(newToDo, project);
