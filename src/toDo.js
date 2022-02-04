@@ -1,3 +1,5 @@
+import { setLocalIDs } from ".";
+
 /**
  * If possible, displays the contents of the itemList list on the screen.
  * Each toDo item has a div with a checkbox, title, details button, and
@@ -33,7 +35,6 @@ function loadToDoItems(itemList)
             const displayItem = document.createElement('div');
             displayItem.classList.add('toDoDiv');
 
-
             //Identify priority and give a colored border accordingly
             if (itemList[i].priority == 1)
             {
@@ -50,7 +51,6 @@ function loadToDoItems(itemList)
                 displayItem.style.borderLeft = '5px solid red';
             }
 
-
             //Add a checkbox that toggles the opacity of the div,
             //gives the "marked off" feeling
             const checkBox = document.createElement('input');
@@ -59,16 +59,13 @@ function loadToDoItems(itemList)
                 displayItem.classList.toggle('checkActive');
             });
 
-
             //Gets the title for the ToDo item
             const title = document.createElement('span');
             title.textContent = itemList[i].title;
 
-
             //Gets the date for the ToDo item
             const date = document.createElement('span');
             date.textContent = itemList[i].dueDate[1] + '/' + itemList[i].dueDate[2] + '/' + itemList[i].dueDate[0];
-
 
             //Gets the popup box for the details
             const detailDiv = document.querySelector('.loginPopup');
@@ -183,19 +180,31 @@ function loadToDoItems(itemList)
             deleteButton.setAttribute('id', i);
             deleteButton.addEventListener('click', function(e) 
             {
-                //Remove item from list
-                itemList.splice(e.target.id, 1);
-
-                //If list is empty, remove content from ToDo display
-                if (itemList.length == 0)
+                let project;
+                
+                //Determine the project and fix the ids
+                if (itemList[i].project == 'today')
                 {
-                    while (todoContent.children.length >= 1)
-                    {
-                        todoContent.children[0].remove();
-                    }
+                    project = 'today';
                 }
 
-                //Reload the today tab
+                else if (itemList[i].project == 'upcoming')
+                {
+                    project = 'upcoming';
+                }
+
+                else
+                {
+                    project = 'user';
+                }
+
+                //Remove item from list
+                itemList.splice(i, 1);
+
+                //Fix the ids
+                setLocalIDs(itemList, project);
+
+                //Reload the tab
                 loadToDoItems(itemList);
             });
 
