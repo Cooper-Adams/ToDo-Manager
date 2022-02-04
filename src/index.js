@@ -110,15 +110,21 @@ function placeNewItem(newItem, project)
         projectList[0].push(newItem);
 
         //Sort list based on priority
-        projectList[0].sort(function (a, b) {
-            return b.priority - a.priority;
-        });
+        sortItems(projectList[0]);
 
-        //Save the item
-        localStorage.setItem('todayTitle' + (todaysItems.length - 1), newItem.title);
-        localStorage.setItem('todayDescription' + (todaysItems.length - 1), newItem.description);
-        localStorage.setItem('todayDate' + (todaysItems.length - 1), newItem.dueDate);
-        localStorage.setItem('todayPriority' + (todaysItems.length - 1), newItem.priority);
+        let idValue;
+
+        for (let i = 0; i < projectList[0].length; ++i)
+        {
+            if (projectList[0][i].title == newItem.title)
+            {
+                idValue = i;
+                break;
+            }
+        }
+
+        //Update the item's ids and save them locally
+        setLocalIDs(projectList[0], 'today');
 
         //Load the today tab of items
         loadToDoItems(projectList[0]);
@@ -131,15 +137,10 @@ function placeNewItem(newItem, project)
         projectList[1].push(newItem);
 
         //Sort list based on priority
-        projectList[1].sort(function (a, b) {
-            return b.priority - a.priority;
-        });
+        sortItems(projectList[1]);
 
-        //Save the item
-        localStorage.setItem('upcomingTitle' + (upcomingItems.length - 1), newItem.title);
-        localStorage.setItem('upcomingDescription' + (upcomingItems.length - 1), newItem.description);
-        localStorage.setItem('upcomingDate' + (upcomingItems.length - 1), newItem.dueDate);
-        localStorage.setItem('upcomingPriority' + (upcomingItems.length - 1), newItem.priority);
+        //Update the item's ids and save them locally
+        setLocalIDs(projectList[1], 'upcoming');
 
         //Load the upcoming tab of items
         loadToDoItems(projectList[1]);
@@ -172,16 +173,10 @@ function placeNewItem(newItem, project)
                 projectList[i + 2].push(newItem);
 
                 //Sort the list based on priority
-                projectList[i + 2].sort(function (a, b) {
-                    return b.priority - a.priority;
-                });
+                sortItems(projectList[i + 2]);
 
-                //Save the item
-                localStorage.setItem('userTitle' + (projectList[i + 2].length - 1), newItem.title);
-                localStorage.setItem('userDescription' + (projectList[i + 2].length - 1), newItem.description);
-                localStorage.setItem('userDate' + (projectList[i + 2].length - 1), newItem.dueDate);
-                localStorage.setItem('userPriority' + (projectList[i + 2].length - 1), newItem.priority);
-                localStorage.setItem('userProject' + (projectList[i + 2].length - 1), newItem.project);
+                //Update the item's ids and save them locally
+                setLocalIDs(projectList[i + 2], 'user');
 
                 //Load the user created tabs items
                 loadToDoItems(projectList[i + 2]);
@@ -427,6 +422,8 @@ function loadData()
             let newToDo = todoItemFactory(title, description, date, priority, 'today');
 
             todaysItems.push(newToDo);
+
+            sortItems(todaysItems);
         }
 
         if (localStorage.getItem('upcomingTitle' + i))
@@ -439,6 +436,8 @@ function loadData()
             let newToDo = todoItemFactory(title, description, date, priority, 'upcoming');
 
             upcomingItems.push(newToDo);
+
+            sortItems(upcomingItems);
         }
 
         if (localStorage.getItem('userTitle' + i))
@@ -451,7 +450,6 @@ function loadData()
 
             let newToDo = todoItemFactory(title, description, date, priority, project);
 
-            //This probably isnt needed lol
             let doesExist = false;
 
             for (let j = 0; j < projectNames.length; ++j)
@@ -461,6 +459,8 @@ function loadData()
                     doesExist = true;
 
                     projectList[j + 2].push(newToDo);
+
+                    sortItems(projectList[j + 2]);
                 }
             }
 
@@ -486,4 +486,58 @@ function loadData()
     }
 }
 
-export { placeNewItem, isNameValid };
+
+/**
+ * This function takes in a list of items and sorts it
+ * by the item's priority level.
+ * 
+ * @param {Object array} itemList 
+ */
+function sortItems(itemList)
+{
+    itemList.sort(function (a, b) {
+        return b.priority - a.priority;
+    });
+}
+
+/**
+ * This function sets the local storage ids of items in a sorted item list.
+ * 
+ * @param {Object array} itemList 
+ */
+function setLocalIDs(itemList, project)
+{
+    if (itemList.length > 0)
+    {
+        for (let i = 0; i < itemList.length; ++i)
+        {
+            //If the item is in a user created project, reset the id
+            if (project == 'user')
+            {
+                localStorage.setItem(project + 'Project' + i, itemList[i].project);
+            }
+
+            //Save the items data
+            localStorage.setItem(project + 'Title' + i, itemList[i].title);
+            localStorage.setItem(project + 'Description' + i, itemList[i].description);
+            localStorage.setItem(project + 'Date' + i, itemList[i].dueDate);
+            localStorage.setItem(project + 'Priority' + i, itemList[i].priority);
+        }
+    }
+
+    if (localStorage.getItem(project + 'Title' + itemList.length))
+    {
+        //Remove item from local storage
+        localStorage.removeItem(project + 'Title' + itemList.length);
+        localStorage.removeItem(project + 'Description' + itemList.length);
+        localStorage.removeItem(project + 'Date' + itemList.length);
+        localStorage.removeItem(project + 'Priority' + itemList.length);
+
+        if (project == 'user')
+        {
+            localStorage.removeItem(project + 'Project' + itemList.length);
+        }
+    }
+}
+
+export { placeNewItem, isNameValid, setLocalIDs };
