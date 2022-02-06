@@ -154,8 +154,8 @@ function placeNewItem(newItem, project)
         notesList.unshift(newItem);
 
         //Save the note
-        localStorage.setItem('noteTitle' + (notesList.length - 1), newItem);
-        localStorage.setItem('noteDescription' + (notesList.length - 1), newItem);
+        localStorage.setItem('noteTitle' + (notesList.length - 1), newItem.header);
+        localStorage.setItem('noteDescription' + (notesList.length - 1), newItem.description);
 
         //Load the notes tab of notes
         loadNotes(notesList);
@@ -511,13 +511,21 @@ function setLocalIDs(itemList, project)
     {
         for (let i = 0; i < itemList.length; ++i)
         {
+            //If its a note, fix the ids
+            if (project == 'note')
+            {
+                localStorage.setItem(project + 'Title' + i, itemList[i].header);
+                localStorage.setItem(project + 'Description' + i, itemList[i].description);
+                continue;
+            }
+
             //If the item is in a user created project, reset the id
             if (project == 'user')
             {
                 localStorage.setItem(project + 'Project' + i, itemList[i].project);
             }
 
-            //Save the items data
+            //Save note data
             localStorage.setItem(project + 'Title' + i, itemList[i].title);
             localStorage.setItem(project + 'Description' + i, itemList[i].description);
             localStorage.setItem(project + 'Date' + i, itemList[i].dueDate);
@@ -525,8 +533,16 @@ function setLocalIDs(itemList, project)
         }
     }
 
+    //Remove the now duplicate and unreachable todo
     if (localStorage.getItem(project + 'Title' + itemList.length))
     {
+        if (project == 'note')
+        {
+            localStorage.removeItem(project + 'Title' + itemList.length);
+            localStorage.removeItem(project + 'Description' + itemList.length);
+            return;
+        }
+
         //Remove item from local storage
         localStorage.removeItem(project + 'Title' + itemList.length);
         localStorage.removeItem(project + 'Description' + itemList.length);
