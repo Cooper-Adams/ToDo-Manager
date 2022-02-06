@@ -168,7 +168,7 @@ function loadToDoItems(itemList)
                 
                 document.getElementById('descripField').value = itemList[e.target.id].description;
                 document.getElementById('priorityField').value = itemList[e.target.id].priority;
-                document.getElementById('projectField').value = 'today';
+                document.getElementById('projectField').value = itemList[e.target.id].project;
 
                 itemList.splice(e.target.id, 1);
             });
@@ -181,7 +181,7 @@ function loadToDoItems(itemList)
             deleteButton.addEventListener('click', function(e) 
             {
                 let project;
-                
+
                 //Determine the project and fix the ids
                 if (itemList[i].project == 'today')
                 {
