@@ -1,3 +1,5 @@
+import { setLocalIDs } from ".";
+
 function loadNotes(notesList)
 {
     const todoContent = document.querySelector('.todoContent');
@@ -59,27 +61,24 @@ function loadNotes(notesList)
                 //Remove item from list
                 notesList.splice(e.target.id, 1);
 
-                //If list is empty, remove content from ToDo display
-                if (notesList.length == 0)
-                {
-                    while (todoContent.children.length >= 1)
-                    {
-                        todoContent.children[0].remove();
-                    }
-                }
+                //Fix the ids
+                setLocalIDs(notesList, 'note');
 
                 //Reload the today tab
                 loadNotes(notesList);
             });
 
+            //Create the header for the note
             let noteHeader = document.createElement('h3');
             noteHeader.classList.add('noteHeader');
             noteHeader.textContent = notesList[i].header;
 
+            //Create the description for the note
             let noteText = document.createElement('span');
             noteText.classList.add('noteText');
             noteText.textContent = notesList[i].description;
 
+            //Add the button, header, and description to the note
             noteBox.appendChild(deleteButton);
             noteBox.appendChild(noteHeader);
             noteBox.appendChild(noteText);
