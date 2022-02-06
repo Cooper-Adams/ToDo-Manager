@@ -96,15 +96,6 @@ function processProjectForm(e)
     //Add the new option to the form
     projects.appendChild(newOption);
 
-    //Add the new project to the sub-menu
-    const subMenu = document.querySelector('.projectSubMenu')
- 
-    const subMenuOption = document.createElement('span');
-    subMenuOption.setAttribute('id', title);
-    subMenuOption.textContent = title;
- 
-    subMenu.appendChild(subMenuOption);
-
     //Reset the form and hide it
     document.querySelector('.projectForm').reset();
     document.getElementById("popupForm").style.display = "none";
@@ -134,6 +125,7 @@ function processNoteForm(e)
     //Create new note
     let newNote = noteFactory(header, description);
 
+    //Add the new note to the list
     placeNewItem(newNote, 'notes');
  
     //Reset the form and hide it
@@ -141,4 +133,40 @@ function processNoteForm(e)
     document.getElementById("popupForm").style.display = "none";
 }
 
-export {processToDoForm, processProjectForm, processNoteForm};
+/**
+ * This function updates the display to list all projects and gives
+ * the option to delete the project and all of its items.
+ * 
+ * @param {String array} projectList Contains the names of the projects
+ */
+function projectDisplay(projectList)
+{
+    const todoContent = document.querySelector('.todoContent');
+
+    //Removes previous tab's content
+    while (todoContent.children.length >= 1)
+    {
+        todoContent.children[0].remove();
+    }
+
+    //If the list is empty
+    if (projectList.length == 0)
+    {
+        const messageDiv = document.createElement('div');
+
+        messageDiv.textContent = "There are no projects! Click the plus symbol in the menu to create a new project.";
+        
+        todoContent.appendChild(messageDiv);
+    }
+
+    else
+    {
+        const messageDiv = document.createElement('div');
+
+        messageDiv.textContent = "Select a project in the menu to see its tasks!";
+        
+        todoContent.appendChild(messageDiv);
+    }
+}
+
+export {processToDoForm, processProjectForm, processNoteForm, projectDisplay};
