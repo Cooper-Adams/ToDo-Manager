@@ -1,7 +1,7 @@
 import loadPage from './pageLoad';
 import loadNotes from './notes';
 import loadToDoItems from './toDo';
-import {processToDoForm, processProjectForm, processNoteForm} from './forms';
+import {processToDoForm, processProjectForm, processNoteForm, projectDisplay} from './forms';
 import './style.css';
 import { noteFactory, todoItemFactory } from './items';
 
@@ -49,33 +49,9 @@ const button = document.querySelector('.addButton');
 button.addEventListener('click', addNew);
 
 const projects = document.querySelector('.projects');
-projects.addEventListener('click', function() {
-    
-    const todoContent = document.querySelector('.todoContent');
-
-    //Removes previous tab's content
-    while (todoContent.children.length >= 1)
-    {
-        todoContent.children[0].remove();
-    }
-    
-    if (projectNames.length == 0)
-    {
-        const messageDiv = document.createElement('div');
-
-        messageDiv.textContent = "There are no projects! Click the plus symbol in the menu to create a new project.";
-        
-        todoContent.appendChild(messageDiv);
-    }
-
-    else
-    {
-        const messageDiv = document.createElement('div');
-
-        messageDiv.textContent = "Choose a project in the menu to view its contents!";
-            
-        todoContent.appendChild(messageDiv);
-    }
+projects.addEventListener('click', () => 
+{    
+    projectDisplay(projectNames);
 });
 
 
@@ -176,7 +152,7 @@ function placeNewItem(newItem, project)
                 sortItems(projectList[i + 2]);
 
                 //Update the item's ids and save them locally
-                setLocalIDs(projectList[i + 2], 'user');
+                setLocalIDs(projectList[i + 2], project);
 
                 //Load the user created tabs items
                 loadToDoItems(projectList[i + 2]);
@@ -201,6 +177,29 @@ function placeNewItem(newItem, project)
 
         //Save the updated list of project names
         localStorage.setItem('projects', projectNames);
+
+        let position = projectNames.length - 1;
+
+        //Add the new project to the sub-menu
+        const subMenu = document.querySelector('.projectSubMenu')
+    
+        const projectDiv = document.createElement('div');
+        projectDiv.classList.add('projectContainer');
+
+        const projectDeleteBtn = document.createElement('span');
+        projectDeleteBtn.textContent = '-';
+        projectDeleteBtn.classList.add('projectDeleteBtn');
+        projectDeleteBtn.setAttribute('id', position);
+        projectDeleteBtn.addEventListener('click', removeProjects);
+
+        const subMenuOption = document.createElement('span');
+        subMenuOption.setAttribute('id', project);
+        subMenuOption.textContent = project;
+    
+        projectDiv.appendChild(projectDeleteBtn);
+        projectDiv.appendChild(subMenuOption);
+
+        subMenu.appendChild(projectDiv);
     }
 }
 
@@ -391,21 +390,32 @@ function loadData()
             //Add the new option to the form
             projects.appendChild(newOption);
 
-            //Identify the menu
+            //Add the new project to the sub-menu
             const subMenu = document.querySelector('.projectSubMenu')
- 
+        
+            const projectDiv = document.createElement('div');
+            projectDiv.classList.add('projectContainer');
+
+            const projectDeleteBtn = document.createElement('span');
+            projectDeleteBtn.textContent = '-';
+            projectDeleteBtn.classList.add('projectDeleteBtn');
+            projectDeleteBtn.setAttribute('id', i);
+            projectDeleteBtn.addEventListener('click', removeProjects); 
+
             //Create the menu option
             const subMenuOption = document.createElement('span');
             subMenuOption.setAttribute('id', projectNames[i]);
             subMenuOption.textContent = projectNames[i];
         
+            projectDiv.appendChild(projectDeleteBtn);
+            projectDiv.appendChild(subMenuOption);
+
+            subMenu.appendChild(projectDiv);
+        
             //Give functionality to the menu option
             subMenuOption.addEventListener('click', function() {
                 loadToDoItems(projectList[i + 2]);
             });
-
-            //Add the option to the menu
-            subMenu.appendChild(subMenuOption);
         }
     }
 
@@ -422,8 +432,6 @@ function loadData()
             let newToDo = todoItemFactory(title, description, date, priority, 'today');
 
             todaysItems.push(newToDo);
-
-            sortItems(todaysItems);
         }
 
         if (localStorage.getItem('upcomingTitle' + i))
@@ -436,41 +444,21 @@ function loadData()
             let newToDo = todoItemFactory(title, description, date, priority, 'upcoming');
 
             upcomingItems.push(newToDo);
-
-            sortItems(upcomingItems);
         }
 
-        if (localStorage.getItem('userTitle' + i))
+        for (let j = 0; j < projectNames.length; ++j)
         {
-            let title = localStorage.getItem('userTitle' + i);
-            let description = localStorage.getItem('userDescription' + i);
-            let date = localStorage.getItem('userDate' + i).split(",");
-            let priority = localStorage.getItem('userPriority' + i);
-            let project = localStorage.getItem('userProject' + i);
-
-            let newToDo = todoItemFactory(title, description, date, priority, project);
-
-            let doesExist = false;
-
-            for (let j = 0; j < projectNames.length; ++j)
+            if (localStorage.getItem(projectNames[j] + 'Title' + i))
             {
-                if (project == projectNames[j])
-                {
-                    doesExist = true;
+                let title = localStorage.getItem(projectNames[j] + 'Title' + i);
+                let description = localStorage.getItem(projectNames[j] + 'Description' + i);
+                let date = localStorage.getItem(projectNames[j] + 'Date' + i).split(",");
+                let priority = localStorage.getItem(projectNames[j] + 'Priority' + i);
+                let project = localStorage.getItem(projectNames[j] + 'Project' + i);
 
-                    projectList[j + 2].push(newToDo);
+                let newToDo = todoItemFactory(title, description, date, priority, project);
 
-                    sortItems(projectList[j + 2]);
-                }
-            }
-
-            if (!doesExist)
-            {
-                let newList = [];
-
-                newList.push(newToDo);
-
-                projectList.push(newList);
+                projectList[j + 2].push(newToDo);
             }
         }
 
@@ -482,6 +470,11 @@ function loadData()
             let newNote = noteFactory(title, description);
 
             notesList.unshift(newNote);
+        }
+
+        for (let i = 0; i < projectList.length; ++i)
+        {
+            sortItems(projectList[i]);
         }
     }
 }
@@ -520,7 +513,7 @@ function setLocalIDs(itemList, project)
             }
 
             //If the item is in a user created project, reset the id
-            if (project == 'user')
+            if (project != 'today' && project != 'upcoming')
             {
                 localStorage.setItem(project + 'Project' + i, itemList[i].project);
             }
@@ -549,11 +542,74 @@ function setLocalIDs(itemList, project)
         localStorage.removeItem(project + 'Date' + itemList.length);
         localStorage.removeItem(project + 'Priority' + itemList.length);
 
-        if (project == 'user')
+        if (project != 'today' && project != 'upcoming')
         {
             localStorage.removeItem(project + 'Project' + itemList.length);
         }
     }
+}
+
+function removeProjects(e)
+{
+    let project = projectNames[e.target.id];
+
+    projectNames.splice(e.target.id, 1);
+
+    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+
+    let position = 2 + parseInt(e.target.id);
+
+    console.log(position);
+
+    //Remove the Project's items if they exist
+    for (let i = 0; i < projectList[position].length; ++i)
+    {
+        if (localStorage.getItem(project + 'Title' + i))
+        {
+            localStorage.removeItem(project + 'Title' + i);
+            localStorage.removeItem(project + 'Description' + i);
+            localStorage.removeItem(project + 'Date' + i);
+            localStorage.removeItem(project + 'Priority' + i);
+            localStorage.removeItem(project + 'Project' + i);
+        }
+    }
+
+    //Remove from the project list
+    projectList.splice(position, 1);
+
+    console.log(projectList);
+
+    //Identify the project options in the ToDo form
+    let projects = document.getElementById('projectField');
+
+    //Remove the obsolete form option
+    projects.removeChild(projects.childNodes[position - 2 + 5]);
+
+    //Reset event listeners to keep array indexes inbounds
+    const deleteButtons = document.querySelectorAll('.projectDeleteBtn');
+
+    if (deleteButtons !== null)
+    {
+        for (const button of deleteButtons)
+        {
+            button.setAttribute('id', position - 2);
+            position++;
+        }
+    }
+
+    if (projectNames.length == 0)
+    {
+        localStorage.removeItem('projects');
+    }
+
+    else
+    {
+        //Save the updated list of project names
+        localStorage.setItem('projects', projectNames);   
+    }
+
+    //Load the default tab
+    loadToDoItems(todaysItems);
 }
 
 export { placeNewItem, isNameValid, setLocalIDs };
