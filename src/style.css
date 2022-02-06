@@ -446,3 +446,17 @@ html, body {
 .projects:hover {
     cursor: default;
 }
+
+.projectContainer {
+    padding: 0;
+    margin: 0;
+}
+
+.projectDeleteBtn {
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.projectDeleteBtn:hover {
+    cursor: pointer;
+}
