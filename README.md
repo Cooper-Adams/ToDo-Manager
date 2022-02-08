@@ -2,6 +2,10 @@
 
 The ToDo-Manager is exactly what the title implies, a hub for your all of your To-Do tasks. 
 
+Try it out here:
+
+https://cooper-adams.github.io/ToDo-Manager/
+
 The ToDo-Manager allows the user to create a To-Do item defined by a title, description, date, priority, and what section it belongs to. To create an item, the user will click the "+" button in the bottom left of the menu. User is able to edit, delete, and review their To-Dos after they are made. The user cannot create a To-Do that is dated before the current date. The To-Do items are sorted by decreasing priority.
     
 Default categories include:
