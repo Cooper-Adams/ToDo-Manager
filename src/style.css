@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --primary-color: #ff3b90;
+    --secondary-color: #6b1138;
+}
+
 html, body {
     margin: 0;
     height: 100%;
@@ -16,22 +27,21 @@ html, body {
     padding: 10px 0px 10px 50px;
     font-size: xx-large;
     text-align: left;
-    background: #305A72;
-    border-bottom: 2px solid black;
+    background: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
     overflow: hidden;
 }
 
 .mainContent {
     flex: 1 1 auto;
     display: flex;
-    background-color: black;
     overflow: hidden;
 }
 
 .menu {
     flex: 0 0 25%;
     background-color: rgb(202, 200, 200);
-    border-right: 2px solid black;
+    border-right: 2px solid var(--secondary-color);
     font-size: x-large;
     overflow: hidden;
 }
@@ -50,24 +60,18 @@ html, body {
 
 .menu button {
     margin-top: 60px;
-    background: #305A72;
-    border: 2px solid black;
+    background: var(--primary-color);
+    border: 2px solid var(--secondary-color);
     border-radius: 50%;
-    line-height: 0px;
     font-size: 60px;
     width: 60px;
     height: 60px;
-    position: absolute;
-    bottom: 45px;
-    left: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.menu button:hover {
-    cursor: pointer;
-}
-
-.menu ul span:hover {
-	text-shadow: 2px 2px 10px #28739E;
+.menu button:hover, .menu ul span:hover {
     cursor: pointer;
 }
 
@@ -84,7 +88,7 @@ html, body {
 .formHeader 
 {
     padding-left: 10px;
-    background: #305A72;
+    background: var(--primary-color);
     text-align: left;
     display: flex;
     justify-content: space-between;
@@ -129,7 +133,7 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 50px;
-    border-right: 2px solid #305A72;
+    border-right: 2px solid var(--primary-color);
 }
 
 /*Organizes the form content*/
@@ -154,48 +158,23 @@ html, body {
   	overflow-y: auto;
 }
 
-.displayForm {
+.displayForm, .toDo-Form, .projectForm, .noteForm {
     display: flex;
     flex-flow: column;
 	max-width: 600px;
 	background: #FAFAFA;
 	margin: 50px auto;
-	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+	box-shadow: 1px 1px 25px var(--secondary-color);
 	border-radius: 10px;
-	border: 6px solid #305A72; 
-}
-
-.toDo-Form {
-    display: flex;
-    flex-flow: column;
-	max-width: 600px;
-	background: #FAFAFA;
-	margin: 50px auto;
-	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
-	border-radius: 10px;
-	border: 6px solid #305A72;
+	border: 6px solid var(--primary-color); 
 }
 
 .projectForm {
     display: none;
-    flex-flow: column;
-	max-width: 600px;
-	background: #FAFAFA;
-	margin: 50px auto;
-	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
-	border-radius: 10px;
-	border: 6px solid #305A72;
 }
 
 .noteForm {
     display: none;
-    flex-flow: column;
-	max-width: 600px;
-	background: #FAFAFA;
-	margin: 50px auto;
-	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
-	border-radius: 10px;
-	border: 6px solid #305A72;
 }
 
 .toDo-Form ul, .projectForm ul, .noteForm ul {
@@ -221,7 +200,7 @@ html, body {
     min-height: 37px;
 	padding: 8px;
 	outline: none;
-	border: 1px solid #B0CFE0;
+	border: 1px solid var(--secondary-color);
 
 }
 
@@ -229,7 +208,7 @@ html, body {
 .projectForm ul li  .field-style:focus, 
 .noteForm ul li  .field-style:focus{
 	box-shadow: 0 0 5px #B0CFE0;
-	border:1px solid #B0CFE0;
+	border:1px solid var(--secondary-color);
 }
 
 .toDo-Form ul li .field-split {
@@ -278,16 +257,14 @@ html, body {
 .projectForm ul li input[type="submit"], 
 .noteForm ul li input[type="button"], 
 .noteForm ul li input[type="submit"] {
-	-moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
-	-webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
-	box-shadow: inset 0px 1px 0px 0px #3985B1;
-	background-color: #216288;
-	border: 1px solid #17445E;
+	background-color: var(--primary-color);
+	border: 1px solid var(--secondary-color);
 	cursor: pointer;
 	color: #FFFFFF;
 	padding: 8px 18px;
 	text-decoration: none;
 	font: 12px Arial, Helvetica, sans-serif;
+    transition: 250ms ease-in;
 }
 
 .toDo-Form ul li input[type="button"]:hover, 
@@ -296,8 +273,7 @@ html, body {
 .projectForm ul li input[type="submit"]:hover, 
 .noteForm ul li input[type="button"]:hover, 
 .noteForm ul li input[type="submit"]:hover {
-	background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
-	background-color: #28739E;
+	background-color: var(--secondary-color);
 }
 
 #priorities {
@@ -315,7 +291,7 @@ html, body {
 }
 
 .active {
-    border-bottom: 2px solid #305A72;
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .checkActive {
@@ -418,13 +394,13 @@ html, body {
     background-color: rgb(202, 200, 200);
     word-wrap: break-word;
     overflow-wrap: break-word;
-    border: 2px solid #17445E;
+    border-radius: 3px;
+    transition: all .2s ease-out;
 }
 
 .noteBox:hover {
     transform: scale(1.005);
 	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
-    transition: all .2s ease-out;
 }
 
 .noteBox button {
