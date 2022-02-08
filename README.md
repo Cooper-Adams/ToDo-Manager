@@ -2,22 +2,22 @@
 
 The ToDo-Manager is exactly what the title implies, a hub for your all of your To-Do tasks. 
 
-The manager should allow the user to create a To-Do item that contains a title, a description, a date, and a priority. The user should have the ability to edit and delete their To-Dos individually after their creation. The user should NOT be able to add notes with a date that is before the current date. After creation, the user should be able to click on the To-Do item and view its full details. In each category, the To-Do items should be sorted by decreasing priority.
-
-Each To-Do item will be added to the category that the user is within on the page. 
-    
+The ToDo-Manager allows the user to create a To-Do item defined by a title, description, date, priority, and what section it belongs to. To create an item, the user will click the "+" button in the bottom left of the menu. User is able to edit, delete, and review their To-Dos after they are made. The user cannot create a To-Do that is dated before the current date. The To-Do items are sorted by decreasing priority.
     
 Default categories include:
 
-Today - users notes that match the current date
+Today - To-Dos that match the current date
 
-Upcoming - users notes that are not "due" until later dates
+Upcoming - To-Dos that are not "due" until later dates
 
-Projects - has subcategories of user created Projects, will contain a scroll for when more than 4-5 are added
+Projects - has subcategories of user created Projects, scrolls when there are more than 3. Has a "-" next to the name, allowing the user to delete the projects and their subsequent items.
 
 Notes - a tab that contains "sticky notes" created by the user, just small, quick message boxes that only require a title (and the option of a description)
 
+These categories are displayed on the left of the screen in a menu (25% width), with the actual To-Do items (or lack thereof) being displayed on the right.
 
-Theses categories will be displayed in a menu on the left of the screen taking approximately 1/4 of the display, while the other 3/4 contains the To-Do items.
+All projects, notes, and To-Do items are saved locally so they persist between browser refreshes. If you want to clear all content at once, open the console and type "localStorage.clear()" and press enter, then refresh your page.
 
-In addition, the menu should contain a button to add a new To-Do, Project Tab, or Note. The To-Do is added to the tab that the user is in at the time of creation, the Project is appended to the list of Projects, and the Note is added to the top of the Notes section.
+Potential Additions:
+
+LoadData() does not verify the dates of the To-Do items, so potentially add a red overlay to items that are "out of date". Also, if an upcoming item is now matching today's date, add it to the today section.
