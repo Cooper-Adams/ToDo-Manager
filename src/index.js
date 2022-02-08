@@ -195,6 +195,7 @@ function placeNewItem(newItem, project)
         const subMenuOption = document.createElement('span');
         subMenuOption.setAttribute('id', project);
         subMenuOption.textContent = project;
+        subMenuOption.addEventListener('click', loadToDoItems(projectList[position + 2]));
     
         projectDiv.appendChild(projectDeleteBtn);
         projectDiv.appendChild(subMenuOption);
